@@ -1,8 +1,13 @@
-import { Env } from "@/utils";
+import prisma from "@/prisma";
+import bcrypt from "bcrypt";
+
 import NextAuth, { AuthOptions } from "next-auth";
 import credentialsProvider from "next-auth/providers/credentials";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+
+import { connectDB } from "@/helpers";
+import { Env } from "@/utils";
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -22,13 +27,43 @@ export const authOptions: AuthOptions = {
           type: "text",
           placeholder: "write your email",
         },
-        password: { label: "password", type: "password" },
+        password: {
+          label: "password",
+          type: "password",
+          placeholder: "write your password",
+        },
       },
-      authorize({ credentials }, req) {
+      async authorize(credentials, req) {
         if (!credentials || !credentials.email || !credentials.password) {
           return null;
         }
-        //  try catch
+        try {
+          await connectDB();
+          const user = await prisma.user.findFirst({
+            where: {
+              email: credentials.email,
+            },
+          });
+          if (!user) {
+            return null;
+          }
+          if (!user.password) {
+            return null;
+          }
+          const isValid = await bcrypt.compare(
+            credentials.password,
+            user.password
+          );
+          if (!isValid) {
+            return null;
+          }
+
+          return { ...user, id: user.id };
+        } catch (error: any) {
+          return null;
+        } finally {
+          await prisma.$disconnect();
+        }
       },
     }),
   ],
@@ -36,5 +71,5 @@ export const authOptions: AuthOptions = {
 };
 
 const handler = NextAuth(authOptions);
-
 export { handler as GET, handler as POST };
+

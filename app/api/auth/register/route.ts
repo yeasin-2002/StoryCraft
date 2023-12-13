@@ -11,7 +11,7 @@ export const POST = async (req: Request) => {
       return NextResponse.json({
         status: 400,
         body: { error: "Please fill all fields" },
-      });
+      }); 
     }
     await connectDB();
     const hashPassword = await bcrypt.hash(password, 10);
