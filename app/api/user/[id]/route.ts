@@ -15,6 +15,6 @@ export const GET = async (req: Request, { params }: IdUser) => {
     if (!user) {
       return ErrorResponse(null, "Not Found");
     }
-    return successResponse(user, "Not Found");
+    return successResponse(user, `Found - ${user.name}`);
   } catch (error) {}
 };
