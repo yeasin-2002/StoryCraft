@@ -7,6 +7,7 @@ interface Param {
   };
 }
 
+// Get Single  Categories
 export const GET = async (req: Request, { params }: Param) => {
   try {
     await connectDB();
@@ -14,11 +15,30 @@ export const GET = async (req: Request, { params }: Param) => {
       where: { id: params.id },
     });
     if (!category) {
-      return ErrorResponse(null, "Not Found");
+      return ErrorResponse(404, "Not Found");
     }
     return successResponse(
       category,
       `Found one category named  - ${category.name} `
+    );
+  } catch (error) {
+    ErrorResponse();
+  } finally {
+    await prisma.$disconnect();
+  }
+};
+
+// Delete a   Category
+export const DELETE = async (req: Request, { params }: Param) => {
+  try {
+    await connectDB();
+    const category = await prisma.category.delete({
+      where: { id: params.id },
+    });
+    if (!category) return ErrorResponse(404, "Not Found");
+    return successResponse(
+      category,
+      `Deleted one category named  - ${category.name} `
     );
   } catch (error) {
     ErrorResponse();

@@ -6,7 +6,7 @@ export const GET = async () => {
     await connectDB();
     const allUser = await prisma.user.findMany();
     if (!allUser) {
-      return ErrorResponse(null, "Not Found", 404);
+      return ErrorResponse(404, "Not Found");
     }
     return successResponse(allUser, `Found ${allUser.length} users`, 200);
   } catch (error) {
