@@ -39,19 +39,25 @@ export const POST = async (req: Request) => {
       cloud_name: Env.CLOUDINARY_CLOUD_NAME,
     });
     const formData = await req.formData();
-    const { title, desc, location, userId, category } = await JSON.parse(
+    const { title, desc, location, userId, categoryId } = await JSON.parse(
       formData.get("postData") as string
     );
-    if (!title || !desc || !location || !userId || !category) {
+
+    if (!title || !desc || !location || !userId || !categoryId) {
       return ErrorResponse(422, "Provide all information");
     }
     await connectDB();
     const user = await prisma.user.findUnique({ where: { id: userId } });
-    const FindCategory = await prisma.category.findFirst({
-      where: { name: category },
+    if (!user) {
+      return ErrorResponse(404, "No user  exist");
+    }
+
+    const FindCategory = await prisma.category.findUnique({
+      where: { id: categoryId },
     });
-    if (!user || !FindCategory) {
-      return ErrorResponse(404, "No user or category exist");
+
+    if (!FindCategory) {
+      return ErrorResponse(404, "No  category exist");
     }
 
     const image = (formData.get("image") as Blob) || null;
@@ -61,12 +67,12 @@ export const POST = async (req: Request) => {
     } else {
       uploadUrl = null;
     }
-    const blog = prisma.blog.create({
+    const blog = await prisma.blog.create({
       data: {
         title,
-        description: desc,
         location,
-        categoryId: category,
+        categoryId,
+        description: desc,
         userId: user.id,
         imgUrl: uploadUrl?.url!,
       },

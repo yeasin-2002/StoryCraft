@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { DetailedHTMLProps, HTMLAttributes } from "react";
+import { Logo } from "./Logo";
 
 interface NavProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {}
@@ -21,7 +22,7 @@ const navItem = [
 export const Nav = ({ ...rest }: NavProps) => {
   return (
     <nav {...rest} className="flex justify-between items-center p-5 ">
-      <p className="font-bold text-lg ">Story Craft</p>
+      <Logo />
       <div className=" space-x-2">
         {navItem.map((item, index) => {
           return (

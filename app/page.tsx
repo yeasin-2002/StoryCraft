@@ -1,12 +1,13 @@
-import { BlogWrapper, Hero } from "./_home";
+import { BlogWrapper, Footer, Hero } from "./_home";
 
 interface pageProps {}
 
 const Home = ({}: pageProps) => {
   return (
-    <div>
+    <div className="space-y-10">
       <Hero />
       <BlogWrapper />
+      <Footer />
     </div>
   );
 };
