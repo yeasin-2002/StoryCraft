@@ -1,10 +1,10 @@
 export interface BlogResponse {
-  data: Blog[];
+  data: Blog[] | null;
   message: string;
   status: number;
 }
 export interface SingleBlogResponse {
-  data: Blog;
+  data: Blog | null;
   message: string;
   status: number;
 }
@@ -38,7 +38,7 @@ export interface Categories {
 }
 
 export interface categoryResponse {
-  data: category[];
+  data: category[] | null;
   message: string;
   status: number;
 }

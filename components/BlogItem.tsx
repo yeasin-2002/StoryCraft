@@ -31,7 +31,7 @@ export const BlogItem = ({ data, ...rest }: BlogItemProps) => {
 
       <Link
         className="btn-primary float-right mt-5 px-4 py-2 rounded-md "
-        href={`/${data.id}`}
+        href={`/blog/${data.id}`}
       >
         Details
       </Link>

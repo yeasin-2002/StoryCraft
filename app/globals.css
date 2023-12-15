@@ -9,6 +9,9 @@
   .btn-primary {
     @apply bg-primary text-primary-foreground;
   }
+  .input-round {
+    @apply border border-gray-600 outline-none rounded-lg px-2 py-3
+  }
 }
  
 @layer base {

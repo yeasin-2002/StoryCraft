@@ -32,6 +32,12 @@ dependencies:
   clsx:
     specifier: ^2.0.0
     version: 2.0.0
+  draft-js:
+    specifier: ^0.11.7
+    version: 0.11.7(react-dom@18.2.0)(react@18.2.0)
+  draftjs-to-html:
+    specifier: ^0.9.1
+    version: 0.9.1
   lucide-react:
     specifier: ^0.294.0
     version: 0.294.0(react@18.2.0)
@@ -64,6 +70,12 @@ devDependencies:
   '@types/bcrypt':
     specifier: ^5.0.2
     version: 5.0.2
+  '@types/draft-js':
+    specifier: ^0.11.16
+    version: 0.11.16
+  '@types/draftjs-to-html':
+    specifier: ^0.8.4
+    version: 0.8.4
   '@types/node':
     specifier: ^20.10.4
     version: 20.10.4
@@ -73,6 +85,9 @@ devDependencies:
   '@types/react-dom':
     specifier: ^18
     version: 18.2.17
+  '@types/react-draft-wysiwyg':
+    specifier: ^1.13.7
+    version: 1.13.7
   autoprefixer:
     specifier: ^10.0.1
     version: 10.4.16(postcss@8.4.32)
@@ -894,6 +909,19 @@ packages:
       '@types/node': 20.10.4
     dev: true
 
+  /@types/draft-js@0.11.16:
+    resolution: {integrity: sha512-J10gYuBxOlIb7c6rTv85zF/mu7xp/2MfarkIRH7Fu2dybmFWKRz3DAgsDUOZmmqFtOMIUM/kokzxLN20/3SK+Q==}
+    dependencies:
+      '@types/react': 18.2.45
+      immutable: 3.7.6
+    dev: true
+
+  /@types/draftjs-to-html@0.8.4:
+    resolution: {integrity: sha512-5FZcjFoJL57N/IttLCTCNI0krX+181oCl5hf76u3TqPkqBAphHrJAO9ReYesx9138kcObaYmpnWC2Yrqxoqd2Q==}
+    dependencies:
+      '@types/draft-js': 0.11.16
+    dev: true
+
   /@types/json-schema@7.0.15:
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
     dev: true
@@ -914,6 +942,13 @@ packages:
     resolution: {integrity: sha512-rvrT/M7Df5eykWFxn6MYt5Pem/Dbyc1N8Y0S9Mrkw2WFCRiqUgw9P7ul2NpwsXCSM1DVdENzdG9J5SreqfAIWg==}
     dependencies:
       '@types/react': 18.2.45
+
+  /@types/react-draft-wysiwyg@1.13.7:
+    resolution: {integrity: sha512-jG2YmbaesrCv7GakLb0fVxaQMAg+bjGvaMwaImrXaYMVEoZzzaoFbTFXTBJmogkxEDrfvtmdUVn5e4koB/gn8A==}
+    dependencies:
+      '@types/draft-js': 0.11.16
+      '@types/react': 18.2.45
+    dev: true
 
   /@types/react@18.2.45:
     resolution: {integrity: sha512-TtAxCNrlrBp8GoeEp1npd5g+d/OejJHFxS3OWmrPBMFaVQMSN0OFySozJio5BHxTuTeug00AVXVAjfDSfk+lUg==}
@@ -1589,6 +1624,10 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     transitivePeerDependencies:
       - encoding
+    dev: false
+
+  /draftjs-to-html@0.9.1:
+    resolution: {integrity: sha512-fFstE6+IayaVFBEvaFt/wN8vdj8FsTRzij7dy7LI9QIwf5LgfHFi9zSpvCg+feJ2tbYVqHxUkjcibwpsTpgFVQ==}
     dev: false
 
   /draftjs-utils@0.10.2(draft-js@0.11.7)(immutable@4.3.4):
@@ -2330,7 +2369,6 @@ packages:
   /immutable@3.7.6:
     resolution: {integrity: sha512-AizQPcaofEtO11RZhPPHBOJRdo/20MKQF9mBLnVkBoyHi1/zXK8fzVdnEpSV9gxqtnh6Qomfp3F0xT5qP/vThw==}
     engines: {node: '>=0.8.0'}
-    dev: false
 
   /immutable@4.3.4:
     resolution: {integrity: sha512-fsXeu4J4i6WNWSikpI88v/PcVflZz+6kMhUfIwc5SY+poQRPnaf5V7qds6SUyUN3cVxEzuCab7QIoLOQ+DQ1wA==}
