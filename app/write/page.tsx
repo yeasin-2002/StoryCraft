@@ -2,13 +2,14 @@
 
 import { categoryResponse } from "@/types";
 import { convertEditorDataToHtml } from "@/utils";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React, { ChangeEvent, useState } from "react";
 
 import { Editor, EditorState } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import toast from "react-hot-toast";
 
 const Write = () => {
   const [image, setImage] = useState<null | string>(null);
@@ -17,7 +18,6 @@ const Write = () => {
   const [categories, setCategories] = useState("");
   const [description, setDescription] = useState<EditorState | string>();
   const SessionData = useSession();
-  console.log("🚀 ~ file: page.tsx:20 ~ Write ~ SessionData:", SessionData);
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { data, isSuccess } = useQuery({
@@ -26,6 +26,18 @@ const Write = () => {
       fetch("http://localhost:3000/api/category").then(
         (res) => res.json() as Promise<categoryResponse>
       ),
+  });
+
+  const { mutateAsync } = useMutation({
+    mutationKey: ["createPost"],
+    mutationFn: (data: FormData) =>
+      fetch("http://localhost:3000/api/post", {
+        method: "POST",
+        body: data,
+      }),
+    onSuccess: () => {
+      console.log("success");
+    },
   });
 
   const imageHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -37,9 +49,27 @@ const Write = () => {
     setDescription(state);
   };
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.table({ title, location, categories, description, image });
+    try {
+      const formData = new FormData();
+      const postData = JSON.stringify({
+        title,
+        location,
+        categories,
+        desc: description,
+        categoryId: categories,
+        userId: SessionData.data?.user?.id,
+      });
+      formData.append("postData", postData);
+      formData.append("image", image!);
+      toast.loading("publishing your post", { id: "postData" });
+
+      await mutateAsync(formData);
+      toast.success("Successfully to create post", { id: "postData" });
+    } catch (error) {
+      toast.error("unable to create post", { id: "postData" });
+    }
   };
   return (
     <form className="container" onSubmit={handleFormSubmit}>
@@ -72,7 +102,7 @@ const Write = () => {
             data?.data?.map((item) => (
               <option
                 key={item.id}
-                value={item.name}
+                value={item.id}
                 className="hover:bg-gray-100 py-2 px-4 input-round"
               >
                 {item.name}
