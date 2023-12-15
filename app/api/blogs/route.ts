@@ -1,8 +1,8 @@
 import {
-    ErrorResponse,
-    cloudinaryUpload,
-    connectDB,
-    successResponse,
+  ErrorResponse,
+  cloudinaryUpload,
+  connectDB,
+  successResponse,
 } from "@/helpers";
 import prisma from "@/prisma";
 import { Env } from "@/utils";
@@ -12,7 +12,13 @@ import { UploadApiResponse, v2 } from "cloudinary";
 export const GET = async () => {
   try {
     await connectDB();
-    const allBlogs = await prisma.blog.findMany();
+    const allBlogs = await prisma.blog.findMany({
+      include: {
+        categories: true,
+        User: true,
+      },
+    });
+
     if (!allBlogs) {
       return ErrorResponse(404, "Not Found");
     }

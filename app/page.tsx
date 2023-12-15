@@ -1,8 +1,14 @@
-export default function Home() {
+import { BlogWrapper, Hero } from "./_home";
+
+interface pageProps {}
+
+const Home = ({}: pageProps) => {
   return (
     <div>
-      <h1>Yeasin</h1>
+      <Hero />
+      <BlogWrapper />
     </div>
   );
-}
-  
+};
+
+export default Home;
