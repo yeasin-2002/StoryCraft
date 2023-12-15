@@ -1,4 +1,4 @@
-import { Blog as BlogType } from "@/types";
+import { Blog as BlogType, SingleBlogResponse } from "@/types";
 import { DetailedHTMLProps, HTMLAttributes } from "react";
 
 interface pageProps
@@ -12,14 +12,18 @@ const getAllBlogs = async (id: string) => {
   const res = await fetch(`http://localhost:3000/api/blogs/${id}`, {
     cache: "no-cache",
   });
-  const data = (await res.json()) as BlogType;
+  const data = (await res.json()) as SingleBlogResponse;
   return data;
 };
 
-const Blog = ({ params, ...rest }: pageProps) => {
-  const allBlogs = getAllBlogs(params.id);
-  console.log("🚀 ~ file: page.tsx:21 ~ Blog ~ allBlogs:", allBlogs);
-  return <div {...rest}>Blog Page</div>;
+const Blog = async ({ params, ...rest }: pageProps) => {
+  const allBlogs = await getAllBlogs(params.id);
+
+  return (
+    <div {...rest}>
+      <p>TItle: {allBlogs?.data?.title}</p>
+    </div>
+  );
 };
 
 export default Blog;

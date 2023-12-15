@@ -29,8 +29,12 @@ export const BlogItem = ({ data, ...rest }: BlogItemProps) => {
       </h1>
       <div dangerouslySetInnerHTML={{ __html: data?.description }}></div>
 
-      <Link href={`/${data.id}`}>Details</Link>
+      <Link
+        className="btn-primary float-right mt-5 px-4 py-2 rounded-md "
+        href={`/${data.id}`}
+      >
+        Details
+      </Link>
     </div>
   );
 };
-
