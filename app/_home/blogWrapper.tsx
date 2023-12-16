@@ -16,6 +16,7 @@ const getAllBlogs = async () => {
 export const BlogWrapper = async ({ ...rest }: blogWrapperProps) => {
   const allBlogs = await getAllBlogs();
 
+
   return (
     <div {...rest}>
       <h2>Blogs</h2>

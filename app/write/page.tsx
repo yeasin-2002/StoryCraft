@@ -3,6 +3,7 @@
 import { categoryResponse, postDataResponse } from "@/types";
 import { convertEditorDataToHtml } from "@/utils";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import chalk from "chalk";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React, { ChangeEvent, useState } from "react";
@@ -18,6 +19,7 @@ const Write = () => {
   const [categories, setCategories] = useState("");
   const [description, setDescription] = useState<EditorState | string>();
   const SessionData = useSession();
+  const [bgImage, setBgImage] = useState<null | File>(null);
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { data, isSuccess } = useQuery({
@@ -38,17 +40,12 @@ const Write = () => {
       const res = (await req.json()) as Promise<postDataResponse>;
       return res;
     },
-    onSuccess: () => {
-      console.log("success");
-    },
-    onError: (err: any) => {
-      console.log("Mutation:", err);
-    },
   });
 
   const imageHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const makeUrl = URL.createObjectURL(e?.currentTarget?.files![0]);
     setImage(makeUrl);
+    setBgImage(e?.currentTarget?.files![0]);
   };
   const editorStateHandler = (e: EditorState) => {
     const state = convertEditorDataToHtml(e);
@@ -62,25 +59,21 @@ const Write = () => {
       const postData = JSON.stringify({
         title,
         location,
-        categories,
         desc: description,
         categoryId: categories,
-        // userId: SessionData.data?.user?.id,
-        userId: "657c14b34817fc9fe6aa95ff",
+        userEmail: SessionData.data?.user.email,
       });
+      // title, desc, location, userId, categoryId
       formData.append("postData", postData);
-      formData.append("image", image!);
+      formData.append("image", bgImage!);
       toast.loading("publishing your post", { id: "postData" });
 
       const setData = await mutateAsync(formData);
-      console.log(
-        "🚀 ~ file: page.tsx:70 ~ handleFormSubmit ~ setData:",
-        setData
-      );
-      if (setData?.status === 200) {
-        toast.success("Successfully to create post", { id: "postData" });
+
+      if (setData?.status == 200) {
+        return toast.success("Successfully to create post", { id: "postData" });
       }
-      toast.error("unable to create post", { id: "postData" });
+      return toast.error("unable to create post", { id: "postData" });
     } catch (error) {
       toast.error("Something went wrong", { id: "postData" });
     }
@@ -110,7 +103,10 @@ const Write = () => {
           name="categories"
           id="categories"
           className="input-round"
-          onChange={(e) => setCategories(e.target.value)}
+          onChange={(e) => {
+            console.log(e.target.value);
+            setCategories(e.target.value);
+          }}
         >
           {isSuccess &&
             data?.data?.map((item) => (

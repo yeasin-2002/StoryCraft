@@ -34,7 +34,9 @@ export const GET = async () => {
 //  Create  a Blog
 export const POST = async (req: Request) => {
   console.log(
-    chalk.bgGreen("====================================================")
+    chalk.bgGreen(
+      "============================================================================================================================================================"
+    )
   );
   try {
     v2.config({
@@ -44,15 +46,15 @@ export const POST = async (req: Request) => {
     });
     const formData = await req.formData();
     chalk.green("formData", formData);
-    const { title, desc, location, userId, categoryId } = await JSON.parse(
+    const { title, desc, location, userEmail, categoryId } = await JSON.parse(
       formData.get("postData") as string
     );
 
-    if (!title || !desc || !location || !userId || !categoryId) {
+    if (!title || !desc || !location || !userEmail || !categoryId) {
       return ErrorResponse(422, "Provide all information");
     }
     await connectDB();
-    const user = await prisma.user.findUnique({ where: { id: userId } });
+    const user = await prisma.user.findUnique({ where: { email: userEmail } });
     if (!user) {
       return ErrorResponse(404, "No user  exist");
     }
@@ -72,6 +74,11 @@ export const POST = async (req: Request) => {
     } else {
       uploadUrl = null;
     }
+
+    console.table({
+      uploadUrl,
+      image,
+    });
     const blog = await prisma.blog.create({
       data: {
         title,
