@@ -1,41 +1,26 @@
+import { Pen } from "lucide-react";
 import Link from "next/link";
 import { DetailedHTMLProps, HTMLAttributes } from "react";
 import { Logo } from "./Logo";
+import { NavProfile } from "./NavProfile";
 
 interface NavProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {}
-const navItem = [
-  {
-    name: "Home",
-    link: "/",
-  },
-  {
-    name: "Blog",
-    link: "/blog",
-  },
-  {
-    name: "Write",
-    link: "/write",
-  },
-];
 
 export const Nav = ({ ...rest }: NavProps) => {
   return (
     <nav {...rest} className="flex justify-between items-center p-5 ">
       <Logo />
-      <div className=" space-x-2">
-        {navItem.map((item, index) => {
-          return (
-            <Link
-              href={item.link}
-              key={index}
-              className="  text-violet-700  font-bold"
-            >
-              {item.name}
-            </Link>
-          );
-        })}
-      </div>
+      <Link href={"/write"} className=" space-x-2 flex items-center gap-x-2">
+        <div className="flex items-center gap-x-2 rounded-full   bg-slate-200 hover:bg-slate-300 px-4 py-2 ">
+          <Pen
+            className="bg-slate-800 rounded-full p-1 text-slate-50"
+            size={25}
+          />
+          <p>Write</p>
+        </div>
+        <NavProfile />
+      </Link>
     </nav>
   );
 };

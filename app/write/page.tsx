@@ -1,6 +1,6 @@
 "use client";
 
-import { categoryResponse } from "@/types";
+import { categoryResponse, postDataResponse } from "@/types";
 import { convertEditorDataToHtml } from "@/utils";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
@@ -30,13 +30,19 @@ const Write = () => {
 
   const { mutateAsync } = useMutation({
     mutationKey: ["createPost"],
-    mutationFn: (data: FormData) =>
-      fetch("http://localhost:3000/api/post", {
+    mutationFn: async (data: FormData) => {
+      const req = await fetch("http://localhost:3000/api/blogs", {
         method: "POST",
         body: data,
-      }),
+      });
+      const res = (await req.json()) as Promise<postDataResponse>;
+      return res;
+    },
     onSuccess: () => {
       console.log("success");
+    },
+    onError: (err: any) => {
+      console.log("Mutation:", err);
     },
   });
 
@@ -59,16 +65,24 @@ const Write = () => {
         categories,
         desc: description,
         categoryId: categories,
-        userId: SessionData.data?.user?.id,
+        // userId: SessionData.data?.user?.id,
+        userId: "657c14b34817fc9fe6aa95ff",
       });
       formData.append("postData", postData);
       formData.append("image", image!);
       toast.loading("publishing your post", { id: "postData" });
 
-      await mutateAsync(formData);
-      toast.success("Successfully to create post", { id: "postData" });
-    } catch (error) {
+      const setData = await mutateAsync(formData);
+      console.log(
+        "🚀 ~ file: page.tsx:70 ~ handleFormSubmit ~ setData:",
+        setData
+      );
+      if (setData?.status === 200) {
+        toast.success("Successfully to create post", { id: "postData" });
+      }
       toast.error("unable to create post", { id: "postData" });
+    } catch (error) {
+      toast.error("Something went wrong", { id: "postData" });
     }
   };
   return (

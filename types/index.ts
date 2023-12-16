@@ -8,6 +8,26 @@ export interface SingleBlogResponse {
   message: string;
   status: number;
 }
+export interface postDataResponse {
+  status: number;
+  message: string;
+  data: {
+    _id: string;
+    title: string;
+    desc: string;
+    photo: string;
+    username: string;
+    categories: string;
+    createdAt: string;
+  };
+}
+
+export interface categoryResponse {
+  data: category[] | null;
+  message: string;
+  status: number;
+}
+
 
 export interface Blog {
   User: User;
@@ -35,12 +55,6 @@ export interface User {
 export interface Categories {
   id: string;
   name: string;
-}
-
-export interface categoryResponse {
-  data: category[] | null;
-  message: string;
-  status: number;
 }
 
 export interface category {

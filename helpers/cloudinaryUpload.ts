@@ -1,9 +1,9 @@
 import { UploadApiResponse, v2 } from "cloudinary";
 
 export const cloudinaryUpload = async (file: Blob) => {
-  return new Promise<UploadApiResponse>(async (resolve, reject) => {
-    const buffer = Buffer.from(await file.arrayBuffer());
-    v2.uploader
+  return await new Promise<UploadApiResponse>(async (resolve, reject) => {
+    const buffer = Buffer?.from(await file?.arrayBuffer());
+    return v2.uploader
       .upload_stream(
         {
           resource_type: "auto",
@@ -22,3 +22,4 @@ export const cloudinaryUpload = async (file: Blob) => {
       .end(buffer);
   });
 };
+

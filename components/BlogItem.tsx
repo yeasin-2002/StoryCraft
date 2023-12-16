@@ -27,7 +27,9 @@ export const BlogItem = ({ data, ...rest }: BlogItemProps) => {
       <h1 className="my-5 font-medium  text-lg">
         {data?.title || "Blog Title"}
       </h1>
-      <div dangerouslySetInnerHTML={{ __html: data?.description }}></div>
+      <div
+        dangerouslySetInnerHTML={{ __html: data?.description.slice(0, 100) }}
+      ></div>
 
       <Link
         className="btn-primary float-right mt-5 px-4 py-2 rounded-md "

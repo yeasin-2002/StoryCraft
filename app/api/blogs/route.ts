@@ -6,6 +6,7 @@ import {
 } from "@/helpers";
 import prisma from "@/prisma";
 import { Env } from "@/utils";
+import chalk from "chalk";
 import { UploadApiResponse, v2 } from "cloudinary";
 
 // Get All Blogs
@@ -32,6 +33,9 @@ export const GET = async () => {
 
 //  Create  a Blog
 export const POST = async (req: Request) => {
+  console.log(
+    chalk.bgGreen("====================================================")
+  );
   try {
     v2.config({
       api_key: Env.CLOUDINARY_API_KEY,
@@ -39,6 +43,7 @@ export const POST = async (req: Request) => {
       cloud_name: Env.CLOUDINARY_CLOUD_NAME,
     });
     const formData = await req.formData();
+    chalk.green("formData", formData);
     const { title, desc, location, userId, categoryId } = await JSON.parse(
       formData.get("postData") as string
     );
@@ -78,8 +83,11 @@ export const POST = async (req: Request) => {
       },
     });
     return successResponse(blog, "Blog Created Successfully");
-  } catch (error) {
-    ErrorResponse();
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.log(chalk.red(error.message));
+    }
+    return ErrorResponse();
   } finally {
     await prisma.$disconnect();
   }
