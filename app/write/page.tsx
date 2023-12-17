@@ -3,7 +3,6 @@
 import { categoryResponse, postDataResponse } from "@/types";
 import { convertEditorDataToHtml } from "@/utils";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import chalk from "chalk";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React, { ChangeEvent, useState } from "react";
@@ -25,7 +24,7 @@ const Write = () => {
   const { data, isSuccess } = useQuery({
     queryKey: ["categories"],
     queryFn: () =>
-      fetch("http://localhost:3000/api/category").then(
+      fetch("/api/category").then(
         (res) => res.json() as Promise<categoryResponse>
       ),
   });
@@ -33,7 +32,7 @@ const Write = () => {
   const { mutateAsync } = useMutation({
     mutationKey: ["createPost"],
     mutationFn: async (data: FormData) => {
-      const req = await fetch("http://localhost:3000/api/blogs", {
+      const req = await fetch("/api/blogs", {
         method: "POST",
         body: data,
       });

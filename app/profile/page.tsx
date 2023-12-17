@@ -1,22 +1,18 @@
 import usrAvatar from "@/assets/defaults/user.jpg";
 import { OwnBlog } from "@/components/OwnBlog";
 import { singUserResponse } from "@/types";
+import { fetchServer } from "@/utils";
 import { getServerSession } from "next-auth/next";
 import Image from "next/image";
 import React from "react";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 
-const UserData = async (mail: string | null | undefined) => {
-  if (!mail) return;
-  const req = await fetch(`http://localhost:3000/api/user/${mail}`, {
-    cache: "default",
-  });
-  return (await req.json()) as singUserResponse;
-};
-
 const Profile = async () => {
   const data = await getServerSession(authOptions);
-  const user = await UserData(data?.user?.email);
+
+  const user = await fetchServer<singUserResponse>(
+    `/api/user/${data?.user?.email}`
+  );
 
   return (
     <div>

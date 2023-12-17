@@ -1,29 +1,22 @@
 "use client";
 
+import { useUpdateBlogState } from "@/store";
 import { categoryResponse, postDataResponse } from "@/types";
-import { convertEditorDataToHtml } from "@/utils";
+import { Env, convertEditorDataToHtml } from "@/utils";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
-import Image from "next/image";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, } from "react";
 
 import { Editor, EditorState } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import toast from "react-hot-toast";
 
 const Update = () => {
-  const [image, setImage] = useState<null | string>(null);
-  const [title, setTitle] = useState("");
-  const [location, setLocation] = useState("");
-  const [categories, setCategories] = useState("");
-  const [description, setDescription] = useState<EditorState | string>();
-  const SessionData = useSession();
-  const [bgImage, setBgImage] = useState<null | File>(null);
+  const updateState = useUpdateBlogState();
 
   const { data, isSuccess } = useQuery({
     queryKey: ["categories"],
     queryFn: () =>
-      fetch("http://localhost:3000/api/category").then(
+      fetch("/api/category").then(
         (res) => res.json() as Promise<categoryResponse>
       ),
   });
@@ -31,7 +24,7 @@ const Update = () => {
   const { mutateAsync } = useMutation({
     mutationKey: ["createPost"],
     mutationFn: async (data: FormData) => {
-      const req = await fetch("http://localhost:3000/api/blogs", {
+      const req = await fetch(Env.BASE_URL +"/api/blogs", {
         method: "POST",
         body: data,
       });
@@ -41,31 +34,22 @@ const Update = () => {
   });
 
   const imageHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const makeUrl = URL.createObjectURL(e?.currentTarget?.files![0]);
-    setImage(makeUrl);
-    setBgImage(e?.currentTarget?.files![0]);
+    updateState.setImg(e?.currentTarget?.files![0]);
   };
   const editorStateHandler = (e: EditorState) => {
     const state = convertEditorDataToHtml(e);
-    setDescription(state);
+    updateState.setDesc(state);
   };
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const formData = new FormData();
-      const postData = JSON.stringify({
-        title,
-        location,
-        desc: description,
-        categoryId: categories,
-        userEmail: SessionData.data?.user.email,
-      });
-      // title, desc, location, userId, categoryId
-      formData.append("postData", postData);
-      formData.append("image", bgImage!);
-      toast.loading("publishing your post", { id: "postData" });
 
+      // title, desc, location, userId, categoryId
+
+      // formData.append("image", bgImage!);
+      toast.loading("publishing your post", { id: "postData" });
       const setData = await mutateAsync(formData);
 
       if (setData?.status == 200) {
@@ -76,6 +60,13 @@ const Update = () => {
       toast.error("Something went wrong", { id: "postData" });
     }
   };
+  console.table({
+    title: updateState.title,
+    desc: updateState.desc,
+    location: updateState.location,
+    img: updateState.img,
+    categoryId: updateState.categoryId,
+  });
   return (
     <form className="container" onSubmit={handleFormSubmit}>
       <div className="flex justify-between items-center">
@@ -87,15 +78,15 @@ const Update = () => {
           type="text"
           placeholder="Title"
           className="input-round"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={updateState.title}
+          onChange={(e) => updateState.setTitle(e.target.value)}
         />
         <input
           type="text"
           placeholder="location"
           className="input-round"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
+          value={updateState.location}
+          onChange={(e) => updateState.setLocation(e.target.value)}
         />
         <select
           name="categories"
@@ -103,7 +94,7 @@ const Update = () => {
           className="input-round"
           onChange={(e) => {
             console.log(e.target.value);
-            setCategories(e.target.value);
+            updateState.setCategoryId(e.target.value);
           }}
         >
           {isSuccess &&
@@ -124,15 +115,6 @@ const Update = () => {
           onChange={imageHandler}
         />
       </div>
-      {image && (
-        <Image
-          src={image}
-          alt="Image"
-          width={500}
-          height={500}
-          className="rounded-lg w-full h-96 my-5 mx-auto object-cover aspect-square ring-2 ring-teal-700 p-1"
-        />
-      )}
 
       <Editor
         wrapperClassName="wrapper-class"

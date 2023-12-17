@@ -1,3 +1,5 @@
+"use client";
+
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
@@ -8,8 +10,9 @@ export const useUpdateBlogState = create(
       {
         title: "",
         location: "",
-        img: "",
+        img: "" as string | File,
         desc: "",
+        categoryId: "",
       },
       (set) => {
         return {
@@ -18,11 +21,26 @@ export const useUpdateBlogState = create(
               state.title = title;
             });
           },
-          setLocation : (location: string) => { 
-            set((state) => { 
-              state.location = location
-             })
-           }
+          setLocation: (location: string) => {
+            set((state) => {
+              state.location = location;
+            });
+          },
+          setDesc: (desc: string) => {
+            set((state) => {
+              state.desc = desc;
+            });
+          },
+          setImg: (img: File | string) => {
+            set((state) => {
+              state.img = img;
+            });
+          },
+          setCategoryId: (cId: string) => {
+            set((state) => {
+              state.categoryId = cId;
+            });
+          },
         };
       }
     )
