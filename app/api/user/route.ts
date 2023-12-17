@@ -4,7 +4,12 @@ import prisma from "@/prisma";
 export const GET = async () => {
   try {
     await connectDB();
-    const allUser = await prisma.user.findMany();
+    const allUser = await prisma.user.findMany({
+      include: {
+        _count: true,
+        Blogs: true,
+      },
+    });
     if (!allUser) {
       return ErrorResponse(404, "Not Found");
     }

@@ -75,10 +75,7 @@ export const POST = async (req: Request) => {
       uploadUrl = null;
     }
 
-    console.table({
-      uploadUrl,
-      image,
-    });
+
     const blog = await prisma.blog.create({
       data: {
         title,

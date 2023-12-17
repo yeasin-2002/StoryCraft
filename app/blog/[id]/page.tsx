@@ -1,5 +1,8 @@
-import { Blog as BlogType, SingleBlogResponse } from "@/types";
+import { SingleBlogResponse } from "@/types";
+import Image from "next/image";
 import { DetailedHTMLProps, HTMLAttributes } from "react";
+
+import defaultImg from "@/assets/defaults/Blogging.jpg";
 
 interface pageProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
@@ -21,7 +24,20 @@ const Blog = async ({ params, ...rest }: pageProps) => {
 
   return (
     <div {...rest}>
-      <p>TItle: {allBlogs?.data?.title}</p>
+      <p>{allBlogs.data?.title}</p>
+      <Image
+        src={allBlogs?.data?.imgUrl || defaultImg}
+        alt={allBlogs.data?.title || " "}
+        height={500}
+        width={500}
+        className="mx-auto "
+      />
+      <div
+        className="blogDetails px-4 py-2"
+        dangerouslySetInnerHTML={{
+          __html: allBlogs.data?.description || "No Content Provided ",
+        }}
+      ></div>
     </div>
   );
 };

@@ -1,20 +1,28 @@
 import { ErrorResponse, connectDB, successResponse } from "@/helpers";
 import prisma from "@/prisma";
-import { NextResponse } from "next/server";
 
 interface IdUser {
   params: {
-    id: string;
+    email: string;
   };
 }
 
 export const GET = async (req: Request, { params }: IdUser) => {
   try {
     await connectDB();
-    const user = await prisma.user.findUnique({ where: { id: params.id } });
+    const user = await prisma.user.findUnique({
+      where: { email: params?.email },
+      include: {
+        Blogs: true,
+        _count: true,
+      },
+    });
+
     if (!user) {
-      return ErrorResponse(null, "Not Found");
+      return ErrorResponse();
     }
     return successResponse(user, `Found - ${user.name}`);
-  } catch (error) {}
+  } catch (error) {
+    return ErrorResponse();
+  }
 };

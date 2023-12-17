@@ -86,3 +86,122 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+
+
+
+/* markdown to html Blog  Style */
+
+@layer components {
+  .blogDetails  {
+    @apply text-gray-700 text-lg leading-relaxed mb-5 !bg-transparent;
+  }
+  .blogDetails p {
+    @apply text-gray-700 text-lg leading-relaxed mb-5;
+  }
+  .blogDetails h1 {
+    @apply text-3xl font-bold mb-5;
+  }
+  .blogDetails h2 {
+    @apply text-2xl font-bold mb-5;
+  }
+  .blogDetails h3 {
+    @apply text-xl font-bold mb-5;
+  }
+  .blogDetails h4 {
+    @apply text-lg font-bold mb-5;
+  }
+  .blogDetails h5 {
+    @apply text-base font-bold mb-5;
+  }
+  .blogDetails h6 {
+    @apply text-sm font-bold mb-5;
+  }
+  .blogDetails ul {
+    @apply list-disc list-inside mb-5;
+  }
+  .blogDetails ol {
+    @apply list-decimal list-inside mb-5;
+  }
+  .blogDetails li {
+    @apply mb-2;
+  }
+  .blogDetails a {
+    @apply text-blue-500;
+  }
+  .blogDetails a:hover {
+    @apply text-blue-700;
+  }
+  .blogDetails blockquote {
+    @apply border-l-4 border-gray-300 italic my-8 pl-8;
+  }
+
+  .blogDetails img {
+    @apply mx-auto my-8;
+  }
+  .blogDetails table {
+    @apply border-collapse border border-gray-300 my-8;
+  }
+  .blogDetails th {
+    @apply border border-gray-300 px-4 py-2;
+  }
+  .blogDetails td {
+    @apply border border-gray-300 px-4 py-2;
+  }
+  .blogDetails code {
+    @apply bg-gray-200 text-gray-700 px-2 py-1 rounded;
+  }
+  .blogDetails pre {
+    @apply bg-gray-200 text-gray-700 px-2 py-1 rounded;
+  }
+  .blogDetails pre code {
+    @apply bg-gray-200 text-gray-700 px-2 py-1 rounded;
+  }
+  .blogDetails hr {
+    @apply border-gray-300 my-8;
+  }
+  .blogDetails .gatsby-resp-image-wrapper {
+    @apply mx-auto my-8;
+  }
+  .blogDetails .gatsby-resp-image-wrapper img {
+    @apply mx-auto my-8;
+  }
+  .blogDetails .gatsby-resp-image-wrapper picture {
+    @apply mx-auto my-8;
+  }
+
+  .blogDetails .gatsby-resp-image-wrapper picture img {
+    @apply mx-auto my-8;
+  }
+  .blogDetails .gatsby-resp-image-wrapper picture source {
+    @apply mx-auto my-8;
+  }
+  .blogDetails .gatsby-resp-image-wrapper picture img {
+    @apply mx-auto my-8;
+  }
+  .blogDetails .gatsby-resp-image-wrapper picture source {
+    @apply mx-auto my-8;
+  }
+  .blogDetails .gatsby-resp-image-wrapper picture img {
+    @apply mx-auto my-8;
+  }
+  .blogDetails .gatsby-resp-image-wrapper picture source {
+    @apply mx-auto my-8;
+  }
+  .blogDetails .gatsby-resp-image-wrapper picture img {
+    @apply mx-auto my-8;
+  }
+
+  .blogDetails .gatsby-resp-image-wrapper picture source {
+    @apply mx-auto my-8;
+  }
+  .blogDetails .gatsby-resp-image-wrapper picture img {
+    @apply mx-auto my-8;
+  }
+
+
+}
+
+
+
