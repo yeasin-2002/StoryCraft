@@ -1,7 +1,6 @@
 import usrAvatar from "@/assets/defaults/user.jpg";
 import { OwnBlog } from "@/components/OwnBlog";
 import { singUserResponse } from "@/types";
-import { fetchServer } from "@/utils";
 import { getServerSession } from "next-auth/next";
 import Image from "next/image";
 import React from "react";
@@ -23,7 +22,7 @@ const Profile = async () => {
     <div>
       <div className="flex flex-col items-center pb-10">
         <Image
-          className="w-24 h-24 mb-3 rounded-full s  hadow-lg"
+          className="w-24 h-24 mb-3 rounded-full shadow-lg"
           src={data?.user?.image || usrAvatar}
           width={200}
           height={200}
@@ -40,7 +39,7 @@ const Profile = async () => {
       <h2 className=" text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-center mt-10 mb-4">
         Your Blogs
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 p-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 p-2 2xl:grid-cols-3">
         {user?.data?.Blogs?.map((item, i) => {
           return <OwnBlog key={item.id} blog={item} />;
         })}

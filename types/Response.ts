@@ -35,3 +35,8 @@ export interface singUserResponse {
   message: string;
   status: number;
 }
+export interface deleteBlogResponse {
+  data: Blog;
+  message: string;
+  status: number;
+}

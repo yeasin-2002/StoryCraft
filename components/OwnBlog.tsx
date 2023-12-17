@@ -9,28 +9,29 @@ interface OwnBlogProps
   blog: Blog;
 }
 
-export const OwnBlog = ({ blog, ...rest }: OwnBlogProps) => {
+export const OwnBlog = async ({ blog, ...rest }: OwnBlogProps) => {
   return (
-    <div className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 w-full h-40 gap-x-2">
+    <div className="p-4 shadow-md h-40 flex gap-x-1 rounded-lg  ">
       <Image
-        className="object-cover w-40 h-full rounded-t-lg   md:rounded-none md:rounded-s-lg"
         src={blog.imgUrl || blogImg}
-        alt=""
+        alt="blog image"
         width={200}
         height={200}
+        className="h-full  object-cover rounded-md"
       />
-      <div className="w-full h-full">
-        <div className="  leading-normal flex-1">
-          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-            {blog.title}
-          </h5>
+      <div className="flex-1   flex flex-col justify-between p-2  ">
+        <div>
+          <h3 className="text-lg font-semibold text-gray-800 ">{blog.title}</h3>
           <div
-            className="mb-3 font-normal text-gray-700 dark:text-gray-400"
-            dangerouslySetInnerHTML={{
-              __html: blog.description.slice(0, 50),
-            }}
+            className="mt-2 text-sm text-gray-600 "
+            dangerouslySetInnerHTML={{ __html: blog.description.slice(0, 100) }}
           />
         </div>
+        <EditAndDeleteBlog
+          blog={blog}
+          className="flex items-center justify-end gap-x-2 "
+          id={blog.id}
+        />
       </div>
     </div>
   );

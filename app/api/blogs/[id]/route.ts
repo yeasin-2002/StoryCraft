@@ -7,7 +7,7 @@ interface Param {
   };
 }
 
-// Get Single  Categories
+// Get Single  Blog
 export const GET = async (req: Request, { params }: Param) => {
   try {
     await connectDB();
@@ -28,7 +28,7 @@ export const GET = async (req: Request, { params }: Param) => {
   }
 };
 
-// Delete a   Category
+// Delete a   Blog
 export const DELETE = async (req: Request, { params }: Param) => {
   try {
     await connectDB();
