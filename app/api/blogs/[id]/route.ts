@@ -13,6 +13,10 @@ export const GET = async (req: Request, { params }: Param) => {
     await connectDB();
     const category = await prisma.blog.findUnique({
       where: { id: params.id },
+      include: {
+        categories: true,
+        User: true,
+      },
     });
     if (!category) {
       return ErrorResponse(404, "Not Found");
@@ -34,6 +38,10 @@ export const DELETE = async (req: Request, { params }: Param) => {
     await connectDB();
     const category = await prisma.blog.delete({
       where: { id: params.id },
+      include: {
+        categories: true,
+        User: true,
+      },
     });
     if (!category) return ErrorResponse(404, "Not Found");
     return successResponse(

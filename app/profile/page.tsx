@@ -1,7 +1,7 @@
 import usrAvatar from "@/assets/defaults/user.jpg";
 import { OwnBlog } from "@/components/OwnBlog";
 import { singUserResponse } from "@/types";
-import { fetchServer } from "@/utils";
+import { $fetch } from "@/utils";
 import { getServerSession } from "next-auth/next";
 import Image from "next/image";
 import React from "react";
@@ -10,7 +10,7 @@ import { authOptions } from "../api/auth/[...nextauth]/route";
 const Profile = async () => {
   const data = await getServerSession(authOptions);
 
-  const user = await fetchServer<singUserResponse>(
+  const user = await $fetch<singUserResponse>(
     `/api/user/${data?.user?.email}`
   );
 

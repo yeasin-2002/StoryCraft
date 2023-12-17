@@ -1,44 +1,75 @@
 "use client";
 
-import { useUpdateBlogState } from "@/store";
-import { categoryResponse, postDataResponse } from "@/types";
-import { Env, convertEditorDataToHtml } from "@/utils";
+import {
+  SingleBlogResponse,
+  categoryResponse,
+  postDataResponse,
+} from "@/types";
+import {
+  $fetch,
+  convertEditorDataToHtml,
+  convertHtmlToEditorState,
+  convertHtmlToEditorState2,
+} from "@/utils";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import React, { ChangeEvent, } from "react";
+import { ContentState, convertFromHTML } from "draft-js";
+import React, { ChangeEvent, useEffect, useState } from "react";
 
 import { Editor, EditorState } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import toast from "react-hot-toast";
 
-const Update = () => {
-  const updateState = useUpdateBlogState();
+interface Props {
+  params: {
+    id: string;
+  };
+}
 
-  const { data, isSuccess } = useQuery({
+const Update = ({ params }: Props) => {
+  const [title, setTitle] = useState("");
+  const [location, setLocation] = useState("");
+  const [img, setImg] = useState<File | string>("");
+  const [setCategoryId, setSetCategoryId] = useState("");
+  const [desc, setDesc] = useState<EditorState>();
+
+  const categoryData = useQuery({
     queryKey: ["categories"],
-    queryFn: () =>
-      fetch("/api/category").then(
-        (res) => res.json() as Promise<categoryResponse>
-      ),
+    queryFn: () => $fetch<categoryResponse>("/api/category"),
+  });
+  const BlogData = useQuery({
+    queryKey: ["categories", params.id],
+    queryFn: () => $fetch<SingleBlogResponse>(`/api/blogs/${params.id}  `),
   });
 
   const { mutateAsync } = useMutation({
     mutationKey: ["createPost"],
-    mutationFn: async (data: FormData) => {
-      const req = await fetch(Env.BASE_URL +"/api/blogs", {
+    mutationFn: async (data: FormData) =>
+      $fetch<postDataResponse>("/api/blogs", {
         method: "POST",
         body: data,
-      });
-      const res = (await req.json()) as Promise<postDataResponse>;
-      return res;
-    },
+      }),
   });
 
+  useEffect(() => {
+    console.log("re rendered");
+    if (BlogData.isSuccess) {
+      setTitle(BlogData?.data?.data?.title!);
+      setLocation(BlogData?.data?.data?.location!);
+      setSetCategoryId(BlogData?.data?.data?.categoryId!);
+      const convertedEditorState = convertHtmlToEditorState2(
+        BlogData?.data?.data?.description!
+      );
+
+      setDesc(convertedEditorState);
+    }
+  }, [BlogData.data, BlogData.isSuccess]);
+
   const imageHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    updateState.setImg(e?.currentTarget?.files![0]);
+    setImg(e.target.files![0]);
   };
   const editorStateHandler = (e: EditorState) => {
     const state = convertEditorDataToHtml(e);
-    updateState.setDesc(state);
+    // setDesc(state);
   };
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -60,45 +91,36 @@ const Update = () => {
       toast.error("Something went wrong", { id: "postData" });
     }
   };
-  console.table({
-    title: updateState.title,
-    desc: updateState.desc,
-    location: updateState.location,
-    img: updateState.img,
-    categoryId: updateState.categoryId,
-  });
+
   return (
     <form className="container" onSubmit={handleFormSubmit}>
-      <div className="flex justify-between items-center">
-        <p>Author </p>
-        <button className="btn btn-primary ">Publish</button>
+      <div className="flex justify-end">
+        <button className="btn btn-primary   ">Publish</button>
       </div>
-      <div className="grid  grid-cols-2 md:grid-cols-4 gap-x-3 gap-y-4 items-center justify-center">
+
+      <div className="grid  grid-cols-2 md:grid-cols-4 gap-x-3 gap-y-4 items-center justify-center my-5">
         <input
           type="text"
           placeholder="Title"
           className="input-round"
-          value={updateState.title}
-          onChange={(e) => updateState.setTitle(e.target.value)}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
         />
         <input
           type="text"
           placeholder="location"
           className="input-round"
-          value={updateState.location}
-          onChange={(e) => updateState.setLocation(e.target.value)}
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
         />
         <select
           name="categories"
           id="categories"
           className="input-round"
-          onChange={(e) => {
-            console.log(e.target.value);
-            updateState.setCategoryId(e.target.value);
-          }}
+          onChange={(e) => setSetCategoryId(e.target.value)}
         >
-          {isSuccess &&
-            data?.data?.map((item) => (
+          {categoryData.isSuccess &&
+            categoryData.data?.data?.map((item) => (
               <option
                 key={item.id}
                 value={item.id}
@@ -121,6 +143,7 @@ const Update = () => {
         editorClassName="editor-class"
         toolbarClassName="toolbar-class"
         onEditorStateChange={editorStateHandler}
+        editorState={desc!}
         wrapperStyle={{
           border: "2px solid black",
           marginBottom: "20px",

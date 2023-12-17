@@ -3,7 +3,7 @@ import Image from "next/image";
 import { DetailedHTMLProps, HTMLAttributes } from "react";
 
 import defaultImg from "@/assets/defaults/Blogging.jpg";
-import { Env, fetchServer } from "@/utils";
+import { Env, $fetch } from "@/utils";
 
 interface pageProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
@@ -13,7 +13,7 @@ interface pageProps
 }
 
 const Blog = async ({ params, ...rest }: pageProps) => {
-  const allBlogs = await fetchServer<SingleBlogResponse>(
+  const allBlogs = await $fetch<SingleBlogResponse>(
     `/api/blogs/${params.id}`,
     { cache: "no-cache" }
   );

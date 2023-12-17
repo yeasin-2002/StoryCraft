@@ -1,13 +1,13 @@
 import { BlogItem } from "@/components/BlogItem";
 import { BlogResponse } from "@/types";
-import { fetchServer } from "@/utils";
+import { $fetch } from "@/utils";
 import { DetailedHTMLProps, HTMLAttributes } from "react";
 
 interface blogWrapperProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {}
 
 export const BlogWrapper = async ({ ...rest }: blogWrapperProps) => {
-  const allBlogs = await fetchServer<BlogResponse>("/api/blogs", {
+  const allBlogs = await $fetch<BlogResponse>("/api/blogs", {
     cache: "no-cache",
   });
 
