@@ -7,6 +7,7 @@ import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 
 import { connectDB } from "@/helpers";
+import { verifyUserCredentials } from "@/helpers/verifyUserDetails";
 import { Env } from "@/utils";
 
 export const authOptions: AuthOptions = {
@@ -74,6 +75,18 @@ export const authOptions: AuthOptions = {
         session.user.id = token.sub;
       }
       return session;
+    },
+    async signIn({ account, user, profile }) {
+      if (account?.provider === "github" || account?.provider === "google") {
+        const newUser = await verifyUserCredentials(user);
+        if (typeof newUser !== null) {
+          user.id = newUser?.id as string;
+          if (profile && profile.sub) {
+            profile.sub = newUser?.id as string;
+          }
+        }
+      }
+      return true;
     },
   },
 };

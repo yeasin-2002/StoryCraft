@@ -20,9 +20,6 @@ export const GET = async () => {
       },
     });
 
-    console.log(chalk.bgRed("==========================================="));
-    console.log("🚀 ~ file: route.ts:22 ~ GET ~ allBlogs:", allBlogs);
-
     if (!allBlogs) {
       return ErrorResponse(404, "Not Found");
     }
