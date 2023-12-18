@@ -14,7 +14,9 @@ export const NavProfile = ({ ...rest }: NavProfileProps) => {
   return (
     <div {...rest}>
       {status === "unauthenticated" ? (
-        <button className="btn btn-primary">log in</button>
+        <Link href={"api/auth/signin"} className="btn btn-primary">
+          log in
+        </Link>
       ) : (
         <Link
           href={"/profile"}

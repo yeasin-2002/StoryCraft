@@ -1,7 +1,7 @@
 {
   "name": "story-craft",
   "scripts": {
-    "dev": "next dev",
+    "dev": "rimraf .next && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

@@ -8,11 +8,9 @@ import {
 import {
   $fetch,
   convertEditorDataToHtml,
-  convertHtmlToEditorState,
   convertHtmlToEditorState2,
 } from "@/utils";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { ContentState, convertFromHTML } from "draft-js";
 import React, { ChangeEvent, useEffect, useState } from "react";
 
 import { Editor, EditorState } from "react-draft-wysiwyg";
@@ -24,6 +22,12 @@ interface Props {
     id: string;
   };
 }
+interface blogUpdate {
+  title: string;
+  description: string;
+  categoriesId: string;
+  location: string;
+}
 
 const Update = ({ params }: Props) => {
   const [title, setTitle] = useState("");
@@ -31,6 +35,7 @@ const Update = ({ params }: Props) => {
   const [img, setImg] = useState<File | string>("");
   const [setCategoryId, setSetCategoryId] = useState("");
   const [desc, setDesc] = useState<EditorState>();
+  const [descHTML, setDescHTML] = useState("");
 
   const categoryData = useQuery({
     queryKey: ["categories"],
@@ -41,11 +46,12 @@ const Update = ({ params }: Props) => {
     queryFn: () => $fetch<SingleBlogResponse>(`/api/blogs/${params.id}  `),
   });
 
+  // title, description, categoriesId, location
   const { mutateAsync } = useMutation({
     mutationKey: ["createPost"],
     mutationFn: async (data: FormData) =>
       $fetch<postDataResponse>("/api/blogs", {
-        method: "POST",
+        method: "PATCH",
         body: data,
       }),
   });
@@ -69,7 +75,8 @@ const Update = ({ params }: Props) => {
   };
   const editorStateHandler = (e: EditorState) => {
     const state = convertEditorDataToHtml(e);
-    // setDesc(state);
+    setDescHTML(state);
+    setDesc(e)
   };
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -78,15 +85,18 @@ const Update = ({ params }: Props) => {
       const formData = new FormData();
 
       // title, desc, location, userId, categoryId
+      formData.append("title", title!);
+      formData.append("description", descHTML!);
+      formData.append("location", location!);
+      formData.append("categoryId", setCategoryId!);
 
-      // formData.append("image", bgImage!);
-      toast.loading("publishing your post", { id: "postData" });
+      toast.loading("Updating  your Blog", { id: "postData" });
       const setData = await mutateAsync(formData);
 
       if (setData?.status == 200) {
-        return toast.success("Successfully to create post", { id: "postData" });
+        return toast.success("Successfully to updated Bog", { id: "postData" });
       }
-      return toast.error("unable to create post", { id: "postData" });
+      return toast.error("unable to updated Bog", { id: "postData" });
     } catch (error) {
       toast.error("Something went wrong", { id: "postData" });
     }

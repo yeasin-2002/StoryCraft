@@ -20,12 +20,16 @@ export const GET = async () => {
       },
     });
 
+    console.log(chalk.bgRed("==========================================="));
+    console.log("🚀 ~ file: route.ts:22 ~ GET ~ allBlogs:", allBlogs);
+
     if (!allBlogs) {
       return ErrorResponse(404, "Not Found");
     }
     return successResponse(allBlogs, `Found ${allBlogs.length} blogs`);
   } catch (error) {
-    ErrorResponse();
+    console.log(error);
+    return ErrorResponse();
   } finally {
     await prisma.$disconnect();
   }
@@ -33,11 +37,6 @@ export const GET = async () => {
 
 //  Create  a Blog
 export const POST = async (req: Request) => {
-  console.log(
-    chalk.bgGreen(
-      "============================================================================================================================================================"
-    )
-  );
   try {
     v2.config({
       api_key: Env.CLOUDINARY_API_KEY,
@@ -75,7 +74,6 @@ export const POST = async (req: Request) => {
       uploadUrl = null;
     }
 
-
     const blog = await prisma.blog.create({
       data: {
         title,
@@ -91,6 +89,24 @@ export const POST = async (req: Request) => {
     if (error instanceof Error) {
       console.log(chalk.red(error.message));
     }
+    return ErrorResponse();
+  } finally {
+    await prisma.$disconnect();
+  }
+};
+
+// Delete All Blogs
+export const DELETE = async () => {
+  try {
+    await connectDB();
+    const allBlogs = await prisma.blog.deleteMany();
+
+    if (!allBlogs) {
+      return ErrorResponse(404, "Not Found");
+    }
+    return successResponse(allBlogs, `Deleted All blogs `);
+  } catch (error) {
+    console.log(error);
     return ErrorResponse();
   } finally {
     await prisma.$disconnect();
