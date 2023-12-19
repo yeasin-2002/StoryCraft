@@ -16,16 +16,21 @@ const Login = ({ ...rest }: pageProps) => {
 
   const formSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const req = await signIn("credentials", { email, password });
-    console.log("🚀 ~ file: page.tsx:19 ~ formSubmitHandler ~ req:", req);
+    try {
+      const req = await signIn("credentials", { email, password });
+    } catch (error: any) {
+      console.log(error?.message);
+      return toast.error("Something went wrong", { id: "login" });
+    }
   };
 
-  const sinInWithGithubOrGoogle = async (method: "github" | "google") => {
+  const sinInWithGithubOrGoogle = async (type: "github" | "google") => {
     try {
       toast.loading("Loading...", { id: "login" });
-      await sinInWithGithubOrGoogle(method);
-    } catch (error) {
-      toast.error("Something went wrong", { id: "login" });
+      await signIn(type);
+    } catch (error: any) {
+      console.log(`${type} Login : `, error?.message);
+      return toast.error("Something went wrong", { id: "login" });
     }
   };
 
@@ -92,21 +97,21 @@ const Login = ({ ...rest }: pageProps) => {
 
         <div className=" space-y-3   mt-5">
           <button
-            onClick={() => sinInWithGithubOrGoogle("google")}
+            onClick={async () => await sinInWithGithubOrGoogle("google")}
             type="button"
             className="flex items-center justify-center w-full px-6 py-2 mx-2 text-sm font-medium text-white transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:bg-blue-400 focus:outline-none"
           >
             <Google />
-            <span className="hidden mx-2 sm:inline">Sign in with Google</span>
+            <span>Sign in with Google</span>
           </button>
 
           <button
-            onClick={() => sinInWithGithubOrGoogle("github")}
+            onClick={async () => await sinInWithGithubOrGoogle("github")}
             type="button"
             className="flex items-center justify-center w-full px-6 py-2 mx-2 text-sm font-medium text-white transition-colors duration-300 transform bg-slate-800 rounded-lg hover:bg-slate-700 focus:bg-slate-900 focus:outline-none"
           >
             <GithubIcon />
-            <span className="hidden mx-2 sm:inline">Sign in with Github</span>
+            <span>Sign in with Github</span>
           </button>
         </div>
 

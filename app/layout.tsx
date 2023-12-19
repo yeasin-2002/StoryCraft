@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="transition-all">
       <body className={inter.className}>
         <ProviderWrapper>
           <Nav />

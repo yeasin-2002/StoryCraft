@@ -1,4 +1,8 @@
 {
   "css.validate": false,
-  "cSpell.words": ["CLOUDINARY"]
+  "cSpell.words": ["CLOUDINARY"],
+  "cssVariables.lookupFiles": [
+    "**/*.css",
+    "node_modules/@mantine/core/styles.css"
+  ]
 }

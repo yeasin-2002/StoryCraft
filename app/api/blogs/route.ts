@@ -45,12 +45,14 @@ export const POST = async (req: Request) => {
     const { title, desc, location, userEmail, categoryId } = await JSON.parse(
       formData.get("postData") as string
     );
+    console.table({ title, desc, location, userEmail, categoryId });
 
     if (!title || !desc || !location || !userEmail || !categoryId) {
       return ErrorResponse(422, "Provide all information");
     }
     await connectDB();
     const user = await prisma.user.findUnique({ where: { email: userEmail } });
+    console.log(chalk.red.bold("🚀 ~ file: route.ts:55 ~ POST ~ user:"), user);
     if (!user) {
       return ErrorResponse(404, "No user  exist");
     }
