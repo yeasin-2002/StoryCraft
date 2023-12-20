@@ -30,7 +30,7 @@ export const EditAndPreview = ({
         text={`${isHidePreview ? "Hide" : "Show"} Preview`}
       />
       <div
-        className={cn("grid  gap-x-4", {
+        className={cn("md:grid block space-y-4   gap-x-4", {
           "grid-cols-1": !isHidePreview,
           "grid-cols-2": isHidePreview,
         })}
@@ -43,7 +43,7 @@ export const EditAndPreview = ({
         />
         {isHidePreview && (
           <div>
-            <p className="font-medium text-xl">Preview</p>
+            <p className="font-medium text-xl mb-10 mt-5">Preview</p>
             <MarkdownAsHtml content={editorContent} />
           </div>
         )}

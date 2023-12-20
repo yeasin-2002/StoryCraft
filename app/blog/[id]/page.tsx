@@ -3,7 +3,8 @@ import Image from "next/image";
 import { DetailedHTMLProps, HTMLAttributes } from "react";
 
 import defaultImg from "@/assets/defaults/Blogging.jpg";
-import { Env, $fetch } from "@/utils";
+import { MarkdownAsHtml } from "@/components";
+import { $fetch } from "@/utils";
 
 interface pageProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
@@ -13,10 +14,9 @@ interface pageProps
 }
 
 const Blog = async ({ params, ...rest }: pageProps) => {
-  const allBlogs = await $fetch<SingleBlogResponse>(
-    `/api/blogs/${params.id}`,
-    { cache: "no-cache" }
-  );
+  const allBlogs = await $fetch<SingleBlogResponse>(`/api/blogs/${params.id}`, {
+    cache: "no-cache",
+  });
 
   return (
     <div {...rest}>
@@ -28,12 +28,10 @@ const Blog = async ({ params, ...rest }: pageProps) => {
         width={500}
         className="mx-auto "
       />
-      <div
+      {/* <MarkdownAsHtml
         className="blogDetails px-4 py-2"
-        dangerouslySetInnerHTML={{
-          __html: allBlogs?.data?.description || "No Content Provided ",
-        }}
-      ></div>
+        content={allBlogs?.data?.description || "No Content Provided "}
+      /> */}
     </div>
   );
 };

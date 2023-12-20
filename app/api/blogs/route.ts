@@ -34,6 +34,12 @@ export const GET = async () => {
 
 //  Create  a Blog
 export const POST = async (req: Request) => {
+  console.log(
+    chalk.red(
+      "--------------------------------------------------------------------------------------------------------------------------------------"
+    )
+  );
+
   try {
     v2.config({
       api_key: Env.CLOUDINARY_API_KEY,
@@ -45,6 +51,7 @@ export const POST = async (req: Request) => {
     const { title, desc, location, userEmail, categoryId } = await JSON.parse(
       formData.get("postData") as string
     );
+
     console.table({ title, desc, location, userEmail, categoryId });
 
     if (!title || !desc || !location || !userEmail || !categoryId) {
@@ -52,7 +59,7 @@ export const POST = async (req: Request) => {
     }
     await connectDB();
     const user = await prisma.user.findUnique({ where: { email: userEmail } });
-    console.log(chalk.red.bold("🚀 ~ file: route.ts:55 ~ POST ~ user:"), user);
+
     if (!user) {
       return ErrorResponse(404, "No user  exist");
     }
@@ -60,12 +67,16 @@ export const POST = async (req: Request) => {
     const FindCategory = await prisma.category.findUnique({
       where: { id: categoryId },
     });
+    console.log("🚀  FindCategory:", FindCategory);
 
     if (!FindCategory) {
       return ErrorResponse(404, "No  category exist");
     }
 
     const image = (formData.get("image") as Blob) || null;
+    console.log(chalk.green("image: ====================="));
+    console.log(image);
+
     let uploadUrl: UploadApiResponse | null = null;
     if (image) {
       uploadUrl = await cloudinaryUpload(image);
@@ -80,7 +91,7 @@ export const POST = async (req: Request) => {
         categoryId,
         description: desc,
         userId: user.id,
-        imgUrl: uploadUrl?.url!,
+        imgUrl: uploadUrl?.url! || null,
       },
     });
     return successResponse(blog, "Blog Created Successfully");

@@ -1,3 +1,5 @@
+"use client";
+
 import Markdown from "markdown-to-jsx";
 import { DetailedHTMLProps, HTMLAttributes } from "react";
 

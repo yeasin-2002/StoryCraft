@@ -9,13 +9,12 @@ import { ImagePreviewer } from "@/components/ImagePreviewer";
 import { categoryResponse, postDataResponse } from "@/types";
 
 const Write = () => {
-  const [image, setImage] = useState<null | string>(null);
+  const [image, setImage] = useState<null | File>(null);
   const [title, setTitle] = useState("");
   const [location, setLocation] = useState("");
   const [categories, setCategories] = useState("");
   const [description, setDescription] = useState("");
   const SessionData = useSession();
-  const [bgImage, setBgImage] = useState<null | File>(null);
 
   const { data, isSuccess } = useQuery({
     queryKey: ["categories"],
@@ -39,6 +38,13 @@ const Write = () => {
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.table({
+      title,
+      location,
+      desc: description,
+      categoryId: categories,
+      userEmail: SessionData.data?.user.email,
+    });
     try {
       const formData = new FormData();
       const postData = JSON.stringify({
@@ -48,15 +54,22 @@ const Write = () => {
         categoryId: categories,
         userEmail: SessionData.data?.user.email,
       });
-      // title, desc, location, userId, categoryId
+
       formData.append("postData", postData);
-      formData.append("image", bgImage!);
+      formData.append("image", image!);
       toast.loading("publishing your post", { id: "postData" });
 
       const setData = await mutateAsync(formData);
-
       if (setData?.status == 200) {
-        return toast.success("Successfully to create post", { id: "postData" });
+        setImage(null);
+        setTitle("");
+        setLocation("");
+        setCategories("");
+        setDescription("");
+
+        return toast.success("Succes  sfully to create post", {
+          id: "postData",
+        });
       }
       return toast.error("unable to create post", { id: "postData" });
     } catch (error) {
