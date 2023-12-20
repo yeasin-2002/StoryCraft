@@ -1,3 +1,7 @@
 ## Story Craft
 
-### A Blog for Storytellers and Story Lovers
+### A Blog for Storytellers and Story Lovers 
+
+```
+npm run dev
+```

@@ -1,2 +1,3 @@
 export * from "./BlogItem";
-export * from "./Editor";
+export * from "./NovelEditor";
+
