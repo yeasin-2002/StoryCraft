@@ -1,26 +1,22 @@
 "use client";
-
-import { categoryResponse, postDataResponse } from "@/types";
-import { convertEditorDataToHtml } from "@/utils";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
-import React, { ChangeEvent, useState } from "react";
-
-import { Editor, EditorState } from "react-draft-wysiwyg";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
+
+import { EditAndPreview } from "@/components/EditAndPreview";
+import { ImagePreviewer } from "@/components/ImagePreviewer";
+import { categoryResponse, postDataResponse } from "@/types";
 
 const Write = () => {
   const [image, setImage] = useState<null | string>(null);
   const [title, setTitle] = useState("");
   const [location, setLocation] = useState("");
   const [categories, setCategories] = useState("");
-  const [description, setDescription] = useState<EditorState | string>();
+  const [description, setDescription] = useState("");
   const SessionData = useSession();
   const [bgImage, setBgImage] = useState<null | File>(null);
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { data, isSuccess } = useQuery({
     queryKey: ["categories"],
     queryFn: () =>
@@ -40,16 +36,6 @@ const Write = () => {
       return res;
     },
   });
-
-  const imageHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const makeUrl = URL.createObjectURL(e?.currentTarget?.files![0]);
-    setImage(makeUrl);
-    setBgImage(e?.currentTarget?.files![0]);
-  };
-  const editorStateHandler = (e: EditorState) => {
-    const state = convertEditorDataToHtml(e);
-    setDescription(state);
-  };
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -79,8 +65,8 @@ const Write = () => {
   };
   return (
     <form className="container" onSubmit={handleFormSubmit}>
-      <div className="flex justify-between items-center">
-        <p>Author </p>
+      <div className="flex justify-between items-center my-3">
+        <span></span>
         <button className="btn btn-primary ">Publish</button>
       </div>
       <div className="grid  grid-cols-2 md:grid-cols-4 gap-x-3 gap-y-4 items-center justify-center">
@@ -118,40 +104,13 @@ const Write = () => {
               </option>
             ))}
         </select>
-        <input
-          type="file"
-          placeholder="chose an image"
-          className="   outline-none rounded-lg px-2"
-          onChange={imageHandler}
-        />
+        <ImagePreviewer img={image} setImage={setImage} />
       </div>
-      {image && (
-        <Image
-          src={image}
-          alt="Image"
-          width={500}
-          height={500}
-          className="rounded-lg w-full h-96 my-5 mx-auto object-cover aspect-square ring-2 ring-teal-700 p-1"
-        />
-      )}
 
-      <Editor
-        wrapperClassName="wrapper-class"
-        editorClassName="editor-class"
-        toolbarClassName="toolbar-class"
-        onEditorStateChange={editorStateHandler}
-        wrapperStyle={{
-          border: "2px solid black",
-          marginBottom: "20px",
-          marginTop: "20px",
-        }}
-        editorStyle={{
-          border: "0.5px solid black",
-          padding: "0 10px",
-          borderRadius: "2px",
-          width: "100%",
-          height: "200px",
-        }}
+      <EditAndPreview
+        id="write"
+        editorContent={description}
+        setEditorContent={setDescription}
       />
     </form>
   );

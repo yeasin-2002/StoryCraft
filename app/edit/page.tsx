@@ -11,6 +11,7 @@ const Edit = () => {
   return (
     <div>
       <NovelEditor
+        id="edit"
         editorContent={editorContent}
         setEditorContent={setEditorContent}
       />

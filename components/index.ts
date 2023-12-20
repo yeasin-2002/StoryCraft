@@ -1,3 +1,3 @@
 export * from "./BlogItem";
-export * from "./NovelEditor";
+export * from "./MarkdownAsHtml";
 
