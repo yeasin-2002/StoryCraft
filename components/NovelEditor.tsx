@@ -2,12 +2,14 @@
 
 import { cn } from "@/utils";
 import { Editor } from "novel";
+import { Dispatch } from "react";
 
 interface NovelEditorProps {
   id: string;
   editorContent: string;
-  setEditorContent: (content: string) => void;
+  setEditorContent: Dispatch<React.SetStateAction<string>>;
   className?: string;
+  disableLocalStorage?: boolean;
 }
 
 export const NovelEditor = ({
@@ -15,19 +17,23 @@ export const NovelEditor = ({
   editorContent,
   setEditorContent,
   className,
+  disableLocalStorage = false,
+  ...rest
 }: NovelEditorProps) => {
   return (
     <Editor
+      {...rest}
       key={id}
+      disableLocalStorage={disableLocalStorage}
       storageKey={id}
       defaultValue={editorContent}
       className={cn(
         "border border-gray-600 rounded-md  w-full  min-h-full m-2 p-2",
         className
       )}
-      onUpdate={(editor) => {
-        const markdown = editor?.storage.markdown.getMarkdown();
-        return setEditorContent(markdown);
+      onUpdate={async (editor) => {
+        const html = editor?.getHTML();
+        html && setEditorContent(html);
       }}
     />
   );

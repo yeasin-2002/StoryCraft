@@ -3,7 +3,6 @@ import Image from "next/image";
 import { DetailedHTMLProps, HTMLAttributes } from "react";
 
 import defaultImg from "@/assets/defaults/Blogging.jpg";
-import { MarkdownAsHtml } from "@/components";
 import { $fetch } from "@/utils";
 
 interface pageProps
@@ -20,7 +19,7 @@ const Blog = async ({ params, ...rest }: pageProps) => {
 
   return (
     <div {...rest}>
-      <p>{allBlogs?.data?.title}</p>
+      <p className="text-3xl font-bold text-center">{allBlogs?.data?.title}</p>
       <Image
         src={allBlogs?.data?.imgUrl || defaultImg}
         alt={allBlogs?.data?.title || " "}
@@ -28,10 +27,12 @@ const Blog = async ({ params, ...rest }: pageProps) => {
         width={500}
         className="mx-auto "
       />
-      {/* <MarkdownAsHtml
+      <div
         className="blogDetails px-4 py-2"
-        content={allBlogs?.data?.description || "No Content Provided "}
-      /> */}
+        dangerouslySetInnerHTML={{
+          __html: allBlogs?.data?.description || "No Content Provided ",
+        }}
+      ></div>
     </div>
   );
 };

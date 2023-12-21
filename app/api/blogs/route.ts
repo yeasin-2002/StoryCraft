@@ -34,11 +34,7 @@ export const GET = async () => {
 
 //  Create  a Blog
 export const POST = async (req: Request) => {
-  console.log(
-    chalk.red(
-      "--------------------------------------------------------------------------------------------------------------------------------------"
-    )
-  );
+
 
   try {
     v2.config({

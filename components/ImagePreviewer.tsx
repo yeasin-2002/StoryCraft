@@ -32,7 +32,7 @@ export const ImagePreviewer = ({
   return (
     <div
       {...rest}
-      className="input-round  w-full  flex items-center  justify-between"
+      className="input-round  w-full  flex items-center  justify-between group"
     >
       <label
         htmlFor="img"
@@ -51,7 +51,9 @@ export const ImagePreviewer = ({
               alt="ImagePreviewer"
               className="object-cover rounded-md "
             />
-            <span>Change Image</span>
+            <span className="text-xs text-gray-500 group-hover:text-gray-900">
+              Change Image
+            </span>
           </Fragment>
         )}
       </label>
@@ -65,12 +67,15 @@ export const ImagePreviewer = ({
         className=" hidden  outline-none rounded-lg px-2"
         onChange={imageHandler}
       />
-      <div
-        className="cursor-pointer hover:bg-gray-300 bg-gray-200 rounded-md p-1"
-        onClick={() => setPreviewUrl(null)}
-      >
-        <X size={15} />
-      </div>
+
+      {previewUrl && (
+        <div
+          className="cursor-pointer hover:bg-gray-300 bg-gray-200 rounded-md p-1"
+          onClick={() => setPreviewUrl(null)}
+        >
+          <X size={15} />
+        </div>
+      )}
     </div>
   );
 };

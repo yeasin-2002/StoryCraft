@@ -38,13 +38,7 @@ const Write = () => {
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.table({
-      title,
-      location,
-      desc: description,
-      categoryId: categories,
-      userEmail: SessionData.data?.user.email,
-    });
+
     try {
       const formData = new FormData();
       const postData = JSON.stringify({
@@ -67,7 +61,7 @@ const Write = () => {
         setCategories("");
         setDescription("");
 
-        return toast.success("Succes  sfully to create post", {
+        return toast.success("Successfully to create post", {
           id: "postData",
         });
       }

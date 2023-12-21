@@ -2,7 +2,6 @@
 
 import { cn } from "@/utils";
 import { DetailedHTMLProps, Dispatch, HTMLAttributes, useState } from "react";
-import { MarkdownAsHtml } from "./MarkdownAsHtml";
 import { NovelEditor } from "./NovelEditor";
 import { Toggle } from "./Toggle";
 
@@ -40,11 +39,14 @@ export const EditAndPreview = ({
           id={id}
           editorContent={editorContent}
           setEditorContent={setEditorContent}
+          disableLocalStorage={true}
         />
         {isHidePreview && (
           <div>
             <p className="font-medium text-xl mb-10 mt-5">Preview</p>
-            <MarkdownAsHtml content={editorContent} />
+            <div
+              dangerouslySetInnerHTML={{ __html: editorContent || "" }}
+            ></div>
           </div>
         )}
       </div>

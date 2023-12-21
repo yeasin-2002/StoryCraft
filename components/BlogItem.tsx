@@ -1,18 +1,18 @@
 "use client";
 import defaultBlogImg from "@/assets/defaults/Blogging.jpg";
 import { Blog } from "@/types";
+import { Pen } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { DetailedHTMLProps, HTMLAttributes } from "react";
 
-interface BlogItemProps
-  extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+interface BlogItemProps {
   data: Blog;
 }
 
 export const BlogItem = ({ data, ...rest }: BlogItemProps) => {
   return (
-    <div
+    <Link
+      href={`/blog/${data.id}`}
       {...rest}
       className="bg-gray-100 hover:bg-gray-200 shadow-md text-gray-700 p-2 rounded-md"
     >
@@ -27,16 +27,10 @@ export const BlogItem = ({ data, ...rest }: BlogItemProps) => {
       <h1 className="my-5 font-medium  text-lg">
         {data?.title || "Blog Title"}
       </h1>
-      <div
-        dangerouslySetInnerHTML={{ __html: data?.description.slice(0, 100) }}
-      ></div>
-
-      <Link
-        className="btn-primary float-right mt-5 px-4 py-2 rounded-md "
-        href={`/blog/${data.id}`}
-      >
-        Details
-      </Link>
-    </div>
+      <div className="flex items-center gap-x-2">
+        <Pen size={15} />
+        {data?.User?.name || "Author Name"}
+      </div>
+    </Link>
   );
 };
