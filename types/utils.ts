@@ -6,6 +6,7 @@ export interface Blog {
   categoryId: string;
   createAt: Date;
   description: string;
+  content: string;
   id: string;
   imgUrl: string | StaticImport;
   location: string;

@@ -28,9 +28,9 @@ const Blog = async ({ params, ...rest }: pageProps) => {
         className="mx-auto "
       />
       <div
-        className=" px-4 py-2 BlogsRenderContent"
+        className=" px-4 py-2 mt-4 BlogsRenderContent"
         dangerouslySetInnerHTML={{
-          __html: allBlogs?.data?.description || "No Content Provided ",
+          __html: allBlogs?.data?.content || "No Content Provided ",
         }}
       ></div>
     </div>

@@ -34,8 +34,6 @@ export const GET = async () => {
 
 //  Create  a Blog
 export const POST = async (req: Request) => {
-
-
   try {
     v2.config({
       api_key: Env.CLOUDINARY_API_KEY,
@@ -44,13 +42,12 @@ export const POST = async (req: Request) => {
     });
     const formData = await req.formData();
     chalk.green("formData", formData);
-    const { title, desc, location, userEmail, categoryId } = await JSON.parse(
-      formData.get("postData") as string
-    );
+    const { title, desc, location, userEmail, categoryId, content } =
+      await JSON.parse(formData.get("postData") as string);
 
-    console.table({ title, desc, location, userEmail, categoryId });
+    console.table({ title, desc, location, userEmail, categoryId, content });
 
-    if (!title || !desc || !location || !userEmail || !categoryId) {
+    if (!title || !desc || !location || !userEmail || !categoryId || !content) {
       return ErrorResponse(422, "Provide all information");
     }
     await connectDB();
@@ -85,6 +82,7 @@ export const POST = async (req: Request) => {
         title,
         location,
         categoryId,
+        content,
         description: desc,
         userId: user.id,
         imgUrl: uploadUrl?.url! || null,

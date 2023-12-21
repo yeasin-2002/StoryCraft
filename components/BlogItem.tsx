@@ -6,11 +6,13 @@ import Link from "next/link";
 
 import defaultBlogImg from "@/assets/defaults/Blogging.jpg";
 import { Blog } from "@/types";
+import { dateIntoReadableDate } from "@/utils";
 interface BlogItemProps {
   data: Blog;
 }
 
 export const BlogItem = ({ data, ...rest }: BlogItemProps) => {
+  const createdDate = dateIntoReadableDate(data.createAt);
   return (
     <Link
       href={`/blog/${data.id}`}
@@ -30,16 +32,21 @@ export const BlogItem = ({ data, ...rest }: BlogItemProps) => {
           <h1 className=" font-medium  text-2xl group-hover:underline">
             {data?.title || "Blog Title"}
           </h1>
+
+          <p className="my-2">{data?.description}</p>
         </div>
-        <div className="flex items-center gap-x-2">
-          <Image
-            src={data.User.profileUrl || defaultUser}
-            alt="creators  profile Phot o"
-            width={50}
-            height={50}
-            className="aspect-square rounded-full w-10 h-10"
-          />
-          {data?.User?.name || "Author Name"}
+        <div className="flex items-center  justify-between">
+          <div className="flex items-center gap-x-2">
+            <Image
+              src={data.User.profileUrl || defaultUser}
+              alt="creators  profile Phot o"
+              width={50}
+              height={50}
+              className=" rounded-full size-2.5"
+            />
+            {data?.User?.name || "Author Name"}
+          </div>
+          <div>{createdDate}</div>
         </div>
       </div>
     </Link>

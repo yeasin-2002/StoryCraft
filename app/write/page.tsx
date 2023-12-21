@@ -14,6 +14,8 @@ const Write = () => {
   const [location, setLocation] = useState("");
   const [categories, setCategories] = useState("");
   const [description, setDescription] = useState("");
+  const [content, setContent] = useState("");
+
   const SessionData = useSession();
 
   const { data, isSuccess } = useQuery({
@@ -44,7 +46,8 @@ const Write = () => {
       const postData = JSON.stringify({
         title,
         location,
-        desc: description,
+        content, //  html content
+        desc: description.slice(0, 100), // text content
         categoryId: categories,
         userEmail: SessionData.data?.user.email,
       });
@@ -117,7 +120,8 @@ const Write = () => {
       <EditAndPreview
         id="write"
         editorContent={description}
-        setEditorContent={setDescription}
+        setEditorContent={setContent}
+        setTextContent={setDescription}
       />
     </form>
   );

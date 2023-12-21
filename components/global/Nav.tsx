@@ -1,4 +1,4 @@
-import { Pen } from "lucide-react";
+import { PenSquare } from "lucide-react";
 import Link from "next/link";
 import { DetailedHTMLProps, HTMLAttributes } from "react";
 import { Logo } from "./Logo";
@@ -14,12 +14,9 @@ export const Nav = ({ ...rest }: NavProps) => {
       <div className=" space-x-2 flex items-center gap-x-2">
         <Link
           href={"/write"}
-          className="flex items-center gap-x-2 rounded-full   bg-slate-200 hover:bg-slate-300 px-4 py-2 "
+          className="flex items-center gap-x-2 rounded-lg   bg-slate-50 hover:bg-slate-100  px-4 py-2 "
         >
-          <Pen
-            className="bg-slate-800 rounded-full p-1 text-slate-50"
-            size={25}
-          />
+          <PenSquare size={25} />
           <p>Write</p>
         </Link>
         <NavProfile />

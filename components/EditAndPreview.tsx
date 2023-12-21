@@ -10,12 +10,14 @@ interface EditAndPreviewProps
   id: string;
   editorContent: string;
   setEditorContent: Dispatch<React.SetStateAction<string>>;
+  setTextContent?: Dispatch<React.SetStateAction<string>>;
 }
 
 export const EditAndPreview = ({
   id,
   editorContent,
   setEditorContent,
+  setTextContent,
   ...rest
 }: EditAndPreviewProps) => {
   const [isHidePreview, setIsHidePreview] = useState(false);
@@ -40,6 +42,7 @@ export const EditAndPreview = ({
           editorContent={editorContent}
           setEditorContent={setEditorContent}
           disableLocalStorage={true}
+          setTextContent={setTextContent}
         />
         {isHidePreview && (
           <div>

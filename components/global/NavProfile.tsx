@@ -36,7 +36,7 @@ export const NavProfile = ({ ...rest }: NavProfileProps) => {
                 <User strokeWidth={2} />
               </div>
             </PopoverTrigger>
-            <PopoverContent className="w-40  bg-gray-100 space-y-3 ">
+            <PopoverContent className="w-40  bg-gray-100 space-y-3 -translate-x-6 ">
               <Link
                 href={"/profile"}
                 className="flex items-center gap-x-2 hover:bg-gray-200 py-2 px-1"
@@ -45,7 +45,7 @@ export const NavProfile = ({ ...rest }: NavProfileProps) => {
                 Profile
               </Link>
               <div
-                className="flex items-center gap-x-2 hover:bg-gray-200 py-2 px-1"
+                className="flex items-center gap-x-2 hover:bg-gray-200 py-4 px-2"
                 onClick={LogOutHandler}
               >
                 <LogOut />
