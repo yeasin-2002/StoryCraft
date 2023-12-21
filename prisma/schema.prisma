@@ -21,6 +21,7 @@ model Blog {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String
+  content     String
   imgUrl      String?
   userId      String   @db.ObjectId
   User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)

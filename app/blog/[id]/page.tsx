@@ -18,8 +18,8 @@ const Blog = async ({ params, ...rest }: pageProps) => {
   });
 
   return (
-    <div {...rest}>
-      <p className="text-3xl font-bold text-center">{allBlogs?.data?.title}</p>
+    <div {...rest} className="container">
+      <p className="text-3xl font-bold ">{allBlogs?.data?.title}</p>
       <Image
         src={allBlogs?.data?.imgUrl || defaultImg}
         alt={allBlogs?.data?.title || " "}
@@ -28,7 +28,7 @@ const Blog = async ({ params, ...rest }: pageProps) => {
         className="mx-auto "
       />
       <div
-        className="blogDetails px-4 py-2"
+        className=" px-4 py-2 BlogsRenderContent"
         dangerouslySetInnerHTML={{
           __html: allBlogs?.data?.description || "No Content Provided ",
         }}

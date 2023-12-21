@@ -26,7 +26,7 @@ export const NavProfile = ({ ...rest }: NavProfileProps) => {
     <div {...rest}>
       {status === "unauthenticated" ? (
         <Link href={"/login"} className="btn btn-primary">
-          log in
+          sing in
         </Link>
       ) : (
         <div>

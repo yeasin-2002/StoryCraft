@@ -11,27 +11,27 @@ import toast from "react-hot-toast";
 interface pageProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {}
 
-const Login = ({ ...rest }: pageProps) => {
+const Register = ({ ...rest }: pageProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const formSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const req = await signIn("credentials", { email, password });
+      return toast.success("Registering", { id: "Register" });
     } catch (error: any) {
       console.log(error?.message);
-      return toast.error("Something went wrong", { id: "login" });
+      return toast.error("Something went wrong", { id: "Register" });
     }
   };
 
   const sinInWithGithubOrGoogle = async (type: "github" | "google") => {
     try {
-      toast.loading("Loading...", { id: "login" });
+      toast.loading("Loading...", { id: "Register" });
       await signIn(type);
     } catch (error: any) {
-      console.log(`${type} Login : `, error?.message);
-      return toast.error("Something went wrong", { id: "login" });
+      console.log(`${type} Register : `, error?.message);
+      return toast.error("Something went wrong", { id: "Register" });
     }
   };
 
@@ -75,7 +75,7 @@ const Login = ({ ...rest }: pageProps) => {
 
           <div className="mt-6">
             <button className="w-full px-6 py-2.5 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
-              Sign In
+              Register
             </button>
           </div>
         </form>
@@ -87,7 +87,7 @@ const Login = ({ ...rest }: pageProps) => {
             href="#"
             className="text-xs text-center text-gray-500 uppercase  hover:underline"
           >
-            or login with Social Media
+            or Register with Social Media
           </a>
 
           <span className="w-1/5 border-b lg:w-1/5"></span>
@@ -100,7 +100,7 @@ const Login = ({ ...rest }: pageProps) => {
             className="flex items-center justify-center w-full px-6 py-2 mx-2 text-sm font-medium text-white transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:bg-blue-400 focus:outline-none"
           >
             <Google />
-            <span>Sign in with Google</span>
+            <span>Register with Google</span>
           </button>
 
           <button
@@ -109,14 +109,14 @@ const Login = ({ ...rest }: pageProps) => {
             className="flex items-center justify-center w-full px-6 py-2 mx-2 text-sm font-medium text-white transition-colors duration-300 transform bg-slate-800 rounded-lg hover:bg-slate-700 focus:bg-slate-900 focus:outline-none"
           >
             <GithubIcon />
-            <span>Sign in with Github</span>
+            <span>Register with Github</span>
           </button>
         </div>
 
         <p className="mt-8 text-xs font-light text-center text-gray-400">
           {"Don't"} have an account?
           <Link
-            href="/register"
+            href="/login"
             className="font-medium text-gray-700  hover:underline"
           >
             Create One
@@ -127,4 +127,4 @@ const Login = ({ ...rest }: pageProps) => {
   );
 };
 
-export default Login;
+export default Register;
