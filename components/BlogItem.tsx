@@ -39,10 +39,10 @@ export const BlogItem = ({ data, ...rest }: BlogItemProps) => {
           <div className="flex items-center gap-x-2">
             <Image
               src={data.User.profileUrl || defaultUser}
-              alt="creators  profile Phot o"
+              alt="creators  profile Photo"
               width={50}
               height={50}
-              className=" rounded-full size-2.5"
+              className=" rounded-full size-8"
             />
             {data?.User?.name || "Author Name"}
           </div>
