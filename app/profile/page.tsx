@@ -4,15 +4,14 @@ import { singUserResponse } from "@/types";
 import { $fetch } from "@/utils";
 import { getServerSession } from "next-auth/next";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 
 const Profile = async () => {
   const data = await getServerSession(authOptions);
 
-  const user = await $fetch<singUserResponse>(
-    `/api/user/${data?.user?.email}`
-  );
+  const user = await $fetch<singUserResponse>(`/api/user/${data?.user?.email}`);
 
   return (
     <div>
@@ -35,11 +34,27 @@ const Profile = async () => {
       <h2 className=" text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-center mt-10 mb-4">
         Your Blogs
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 p-2 2xl:grid-cols-3">
-        {user?.data?.Blogs?.map((item, i) => {
-          return <OwnBlog key={item.id} blog={item} />;
-        })}
-      </div>
+      {user?.data?.Blogs.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 p-2 2xl:grid-cols-3">
+          {user?.data?.Blogs?.map((item, i) => {
+            return <OwnBlog key={item.id} blog={item} />;
+          })}
+        </div>
+      )}
+
+      {user?.data?.Blogs.length > 0 || (
+        <div className="w-full mt-20">
+          <h2 className=" text-2xl w-full text-center font-bold  text-gray-800  mt-10 mb-4">
+            You have no blogs
+          </h2>
+          <p className="text-center">
+            Want to create one?{" "}
+            <Link className="text-blue-500 underline" href="/blog/new">
+              Click here
+            </Link>
+          </p>
+        </div>
+      )}
     </div>
   );
 };

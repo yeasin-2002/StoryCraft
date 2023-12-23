@@ -45,7 +45,7 @@ export const NavProfile = ({ ...rest }: NavProfileProps) => {
                 Profile
               </Link>
               <div
-                className="flex items-center gap-x-2 hover:bg-gray-200 py-4 px-2"
+                className="flex items-center gap-x-2 hover:bg-gray-200 py-4 px-2 cursor-pointer"
                 onClick={LogOutHandler}
               >
                 <LogOut />

@@ -10,14 +10,18 @@ export const Hero = ({ ...rest }: HeroProps) => {
         <p className="flex items-center font-bold text-2xl">
           Learn From the Best
         </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repudiandae,
-          magnam!
+        <p className="mt-5  text-slate-600 ">
+          Dive into a world where opens the doors to limitless possibilities. We
+          are not just a blog; we are a journey of exploration, discovery, and
+          inspiration. Here, we curate content that transcends boundaries,
+          bringing you the latest insights, trends, and stories that matter.
         </p>
       </div>
-      <Image src={learnImg} alt="Learn from the best" />
+      <Image
+        src={learnImg}
+        alt="Learn from the best"
+        className="aspect-video object-cover rounded-md"
+      />
     </div>
   );
 };
-
-

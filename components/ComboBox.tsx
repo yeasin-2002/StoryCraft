@@ -30,7 +30,6 @@ export const ComboBox = ({
   setValue,
   placeholder,
 }: ComboBoxProps) => {
-  console.log("🚀 ~ file: ComboBox.tsx:32 ~ value:", value);
   return (
     <Fragment>
       <Popover>
@@ -39,7 +38,7 @@ export const ComboBox = ({
         </PopoverTrigger>
         <PopoverContent>
           <Command>
-            <CommandInput placeholder="Type a command or search..." />
+            <CommandInput placeholder="search..." />
             <CommandList className="bg-gray-50 text-gray-800">
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup>

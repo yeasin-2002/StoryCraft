@@ -12,6 +12,11 @@
   .input-round {
     @apply border border-gray-600 outline-none rounded-lg px-2 py-3;
   }
+  
+  .btn-super {
+    @apply flex items-center justify-center w-full px-6 py-2 mx-2 text-sm font-medium text-white transition-colors duration-300 transform  focus:outline-none
+  }
+
 }
 
 @layer base {
@@ -91,7 +96,7 @@
 
 @layer components {
   .BlogsRenderContent {
-    @apply leading-relaxed mb-5 !bg-transparent;
+    @apply leading-relaxed mb-5 ;
   }
 
   .BlogsRenderContent h1 {

@@ -37,7 +37,7 @@ const Login = ({ ...rest }: pageProps) => {
 
   return (
     <div {...rest}>
-      <div className="w-full max-w-sm p-6 m-auto mx-auto bg-white rounded-lg shadow-md ">
+      <div className="w-full max-w-sm p-6 m-auto mx-auto  rounded-lg shadow-md ">
         <div className="flex justify-center mx-auto">
           <Logo />
         </div>
@@ -97,7 +97,7 @@ const Login = ({ ...rest }: pageProps) => {
           <button
             onClick={async () => await sinInWithGithubOrGoogle("google")}
             type="button"
-            className="flex items-center justify-center w-full px-6 py-2 mx-2 text-sm font-medium text-white transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:bg-blue-400 focus:outline-none"
+            className="btn-super  !bg-blue-500 rounded-lg hover:bg-blue-400 focus:bg-blue-400"
           >
             <Google />
             <span>Sign in with Google</span>
@@ -106,7 +106,7 @@ const Login = ({ ...rest }: pageProps) => {
           <button
             onClick={async () => await sinInWithGithubOrGoogle("github")}
             type="button"
-            className="flex items-center justify-center w-full px-6 py-2 mx-2 text-sm font-medium text-white transition-colors duration-300 transform bg-slate-800 rounded-lg hover:bg-slate-700 focus:bg-slate-900 focus:outline-none"
+            className="btn-super  bg-slate-800 rounded-lg hover:bg-slate-700 focus:bg-slate-900   "
           >
             <GithubIcon />
             <span>Sign in with Github</span>
