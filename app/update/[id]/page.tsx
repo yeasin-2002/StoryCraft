@@ -20,13 +20,29 @@ interface Props {
 }
 
 const Update = ({ params }: Props) => {
+  const currentBlogDataResponse = useQuery({
+    queryKey: ["currentBlog", params?.id],
+    queryFn: () =>
+      $fetch(`/api/blogs/${params?.id}`) as Promise<SingleBlogResponse>,
+  });
+  const currentBlogData = currentBlogDataResponse.data?.data;
+
   const [image, setImage] = useState<null | File>(null);
-  const [title, setTitle] = useState("");
-  const [location, setLocation] = useState("");
-  const [categories, setCategories] = useState("");
-  const [description, setDescription] = useState("");
+  const [title, setTitle] = useState(currentBlogData?.title || "");
+  const [location, setLocation] = useState(currentBlogData?.location || "");
+  const [categories, setCategories] = useState(
+    currentBlogData?.categories?.id || ""
+  );
+  const [description, setDescription] = useState(
+    currentBlogData?.description || ""
+  );
+  const [content, setContent] = useState(currentBlogData?.content || "");
   const SessionData = useSession();
 
+  console.log(
+    "🚀 ~ file: page.tsx:40 ~ Update ~ content:",
+    currentBlogData?.content
+  );
   const categoryData = useQuery({
     queryKey: ["categories"],
     queryFn: () =>
@@ -34,15 +50,6 @@ const Update = ({ params }: Props) => {
         (res) => res.json() as Promise<categoryResponse>
       ),
   });
-  const currentBlogData = useQuery({
-    queryKey: ["currentBlog", params?.id],
-    queryFn: () =>
-      $fetch(`/api/blogs/${params?.id}`) as Promise<SingleBlogResponse>,
-  });
-  console.log(
-    "🚀 ~ file: page.tsx:42 ~ Update ~ currentBlogData:",
-    currentBlogData?.data?.data
-  );
 
   const { mutateAsync } = useMutation({
     mutationKey: ["createPost"],
@@ -136,8 +143,9 @@ const Update = ({ params }: Props) => {
 
       <EditAndPreview
         id="write"
-        editorContent={description}
-        setEditorContent={setDescription}
+        editorContent={content}
+        setEditorContent={setContent}
+        setTextContent={setDescription}
       />
     </form>
   );

@@ -8,12 +8,42 @@ import prisma from "@/prisma";
 import { Env } from "@/utils";
 import chalk from "chalk";
 import { UploadApiResponse, v2 } from "cloudinary";
+import { NextRequest } from "next/server";
 
 // Get All Blogs
-export const GET = async () => {
+export const GET = async (req: NextRequest) => {
   try {
     await connectDB();
+
+    const searchParams = req.nextUrl.searchParams;
+    const category = searchParams.get("category") || "";
+    const searchValue = searchParams.get("search") || "";
+
+    // const queryBuilderForSearch = {};
+
     const allBlogs = await prisma.blog.findMany({
+      where: {
+        OR: [
+          {
+            title: {
+              contains: searchValue,
+              mode: "insensitive",
+            },
+          },
+          {
+            description: {
+              contains: searchValue,
+              mode: "insensitive",
+            },
+          },
+          {
+            content: {
+              contains: searchValue,
+              mode: "insensitive",
+            },
+          },
+        ],
+      },
       include: {
         categories: true,
         User: true,

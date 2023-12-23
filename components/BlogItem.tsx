@@ -33,7 +33,7 @@ export const BlogItem = ({ data, ...rest }: BlogItemProps) => {
             {data?.title || "Blog Title"}
           </h1>
 
-          <p className="my-2">{data?.description}</p>
+          <p className="my-2">{data?.description}.......</p>
         </div>
         <div className="flex items-center  justify-between">
           <div className="flex items-center gap-x-2">
